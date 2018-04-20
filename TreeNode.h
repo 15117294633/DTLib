@@ -13,7 +13,7 @@ namespace DTLib
         TreeNode<T>* parent;//线性表
         TreeNode()
         {
-         parent=NULL;
+            this->parent=NULL;
         }
         virtual ~TreeNode()=0;
     };

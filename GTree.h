@@ -55,6 +55,7 @@ protected:
         }
         return ret;
     }
+    //树中清除操作
     void free(GTreeNode<T>* node)
     {
         //param的判断
@@ -77,10 +78,12 @@ protected:
            */
         }
     }
+   //param:@node:要删除的节点
+   //      @ret:返回数节点
     void remove(GTreeNode<T>* node,GTree<T>* &ret)
-     {
+    {
         //指针的引用
-        ret=new GTree();//创建新的对象
+        ret=new GTree();
         if(ret!=NULL)
         {
             if(root()==NULL)
@@ -89,9 +92,8 @@ protected:
             }
             else
             {
-                //代码编容易
+                //不加&后果 --会导致调用拷贝构造，容器类组件已经禁用拷贝构造，所以不加会报错
                 LinkList<GTreeNode<T>*>& child=dynamic_cast<GTreeNode<T>*>(node->parent)->child;
-                //
                 child.remove(child.find(node));
                 queue.clear();
                 node->parent=NULL;
@@ -100,9 +102,9 @@ protected:
         }
         else
         {
-            //THORW EXPECTION
+            //THORW_EXPECTION(NoEnoughMemoryException,"not enought memory to creat Tree");
         }
-     }
+    }
     //count 结点的查询操作
     int count(GTreeNode<T>* node) const
     {
@@ -256,7 +258,7 @@ public:
     }
    void clear()
    {
-        free(root());//程序BUG
+        free(root());
         queue.clear();
         this->m_root=NULL;
    }
@@ -272,6 +274,7 @@ public:
    {
         return count(root());
    }
+   //遍历操作需要做的4个函数
    bool begin()
    {
        bool ret=(root()!=NULL);

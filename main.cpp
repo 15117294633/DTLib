@@ -5,6 +5,8 @@
 #include <cstdlib>
 #include <cstring>
 #include "DynamicArray.h"
+#include "gtreenode.h"
+#include "GTree.h"
 #include "sort.h"
 using namespace DTLib;
 using namespace std;
@@ -48,45 +50,62 @@ Graph<V, E>& GraphComplex()
 */
 int main()
 {
-    //C++11做法
-    int array[10]={1,3,2,4,0,7,6,9,8,5};
+  //测试代码
+   GTreeNode<char> root;
+   root.parent=NULL;//Comfire
+   root.values='A';
+   GTree<char> my;
+   my.insert(&root);
+   GTreeNode<char>* temp=NULL;
+   temp=my.find(&root);
+   my.insert('B',temp);
+   my.insert('C',temp);
+   my.insert('D',temp);
+   temp=my.find('B');
+   my.insert('E',temp);
+   my.insert('F',temp);
+   temp=my.find('E');
+   my.insert('K',temp);
+   my.insert('L',temp);
+   temp=my.find('C');
+   my.insert('G',temp);
 
-    Sort::Merge(array,10);
-    for(int i=0;i<10;i++)
-    {
-        cout<<array[i]<<endl;
-    }
-    //加入对数组类的排序算法
+   temp=my.find('D');
+   my.insert('H',temp);
+   my.insert('I',temp);
+   my.insert('J',temp);
+   temp=my.find('H');
+   my.insert('M',temp);
 
-    DynamicArray<int> sb(5);
-    sb[0]=2;
-    sb[1]=1;
-    sb[2]=4;
-    sb[3]=3;
-    sb[4]=0;
-    /*
-    Sort::Select(sb);
-    for(int i=0;i<sb.length();i++)
-    {
-        cout<<sb[i]<<endl;
-    }
-    */
-    /*
-    DynamicArray<int> sp(12);
-    int* temp=String::make_pmt("D.T.Software");
-    for(int i=0;i<12;i++)
-    {
-        sp[i]=temp[i];
-    }
-    for(int i=0;i<sp.length();i++)
-    {
-        cout<<sp[i]<<endl;
-    }
-    free(temp);
+//   const char* freach="KLFGMIJ";
+//   while (*freach!='\0') {
+//       TreeNode<char>* temp1;
+//       temp1=my.find(*freach);
+//       while(temp1!=NULL)
+//       {
+//          cout<<temp1->values<<" ";
+//          temp1=temp1->parent;
+//       }
+//       cout<<endl;
+//       freach++;
+//   }
+  SharedPointer<Tree<char>> sp=my.remove('D');
+  const char* freach="MIJ";
+  while (*freach!='\0') {
+      TreeNode<char>* temp1;
+      temp1=sp->find(*freach);
+      while(temp1!=NULL)
+      {
+         cout<<temp1->values<<" ";
+         temp1=temp1->parent;
+      }
+      cout<<endl;
+      freach++;
+  }
 
-    cout<<String::kmp("D.T.Software","Soft")<<endl;
-    */
-
+  cout<<sp->count()<<endl;
+  cout<<sp->height()<<endl;
+  cout<<sp->degree()<<endl;
 
     /*
     Graph<int, int>& g = GraphEasy<int, int>();
