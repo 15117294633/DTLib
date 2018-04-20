@@ -13,7 +13,8 @@ protected:
     GTree(const GTree<T>&);
     GTree<T>& operator =(const GTree<T>&);
     //LinkQueue
-    LinkQueue<GTreeNode<T>*> queue;//队列
+    //用于层次遍历的时候的容器的使用
+    LinkQueue<GTreeNode<T>*> queue;
     //find操作的重载版本
     GTreeNode<T>* find(GTreeNode<T>* node,const T& value) const
     {
@@ -293,13 +294,15 @@ public:
        bool ret=(queue.length()>0);
        if(ret)
        {
+           //get queue head's Node
            GTreeNode<T>* node=queue.front();
-           //队头元素弹出
+           //pop operator
            queue.remove();
-           //遍历子结点
-           for(node->child.move(0);!node->child.end();node->child.next())
+           //add child into
+           LinkList< GTreeNode<T>*>& list=node->child;
+           for(list.move(0);!list.end();list.next())
            {
-               queue.add(node->child.current());
+               queue.add(list.current());
            }
        }
        return ret;
