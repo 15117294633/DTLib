@@ -11,16 +11,10 @@ class GTreeNode:public TreeNode<T>
     //step1
     GTreeNode(const GTreeNode<T>&);
     GTreeNode<T>& operator =(const GTreeNode<T>&);
-    //step2
-    bool m_flag;
-    void* operator new (unsigned int size) throw()
-    {
-        return Object::operator new(size);
-    }
   public:
     GTreeNode()
     {
-        m_flag=false;
+
     }
     //step3
     static GTreeNode<T>* NewNode()
@@ -34,11 +28,6 @@ class GTreeNode:public TreeNode<T>
     }
     //孩子节点链表
     LinkList<GTreeNode<T>*> child;//child node
-    //step4
-    bool get_flag()
-    {
-        return m_flag;
-    }
 };
 }
 #endif // GTREENODE_H
