@@ -29,9 +29,11 @@ protected:
     };
     virtual BTreeNode<T>* find(BTreeNode<T>* node,const T& value) const
     {
+        //creat a temp pointer
         BTreeNode<T>* ret=NULL;
         if(node!=NULL)
         {
+            //出口条件
             if(node->values==value)
             {
                 ret=node;
@@ -73,6 +75,8 @@ protected:
         }
         return ret;
     }
+    //Common operator
+    //np is parent node
     virtual bool insert(BTreeNode<T>* n,BTreeNode<T>* np,BTNodePos pos)
     {
         bool ret=true;
@@ -115,10 +119,30 @@ protected:
         }
         return ret;
     }
+
+    void free(BTreeNode<T>* node)
+    {
+        if(node!=NULL)
+        {
+            if(node->left!=NULL)
+            {
+                free(node->left);
+            }
+            if(node->right!=NULL)
+            {
+                free(node->right);
+            }
+            if(node->get_flag())
+            {
+                delete node;
+            }
+        }
+    }
     void remove(BTreeNode<T>* node,BTree<T>* &ret)
     {
         if(node!=NULL)
         {
+            //creat a new tree
             ret=new BTree<T>();
             if(ret!=NULL)
             {
@@ -128,6 +152,7 @@ protected:
                 }
                 else
                 {
+                    //get parent
                     BTreeNode<T>* parent=dynamic_cast<BTreeNode<T>*>(node->parent);
                     if(parent->left==node)
                     {
@@ -144,7 +169,7 @@ protected:
             }
             else
             {
-                //抛出异常
+                //cout<<node->values<<" ";
             }
         }
         else
@@ -152,7 +177,7 @@ protected:
             //抛出参数异常的错误
         }
     }
-    int count(BTreeNode<T>*node)const
+    int count(BTreeNode<T>* node)const
     {
         return (node==NULL)?0:count(node->left)+count(node->right)+1;
     }
@@ -348,19 +373,18 @@ public:
      {
         return insert(node,ANY);
      }
-     bool insert(const T& value,TreeNode<T>* parent)
-     {
-        return insert(value,parent,ANY);
-     }
      bool insert(TreeNode<T>* node,BTNodePos pos)
      {
-         bool ret=true;
+         //ret
+         bool ret=false;
          if(node!=NULL)
          {
+             //first judgement tree has a node
              if(this->m_root==NULL)
              {
                 node->parent=NULL;
                 this->m_root=node;
+                ret=true;
              }
              else
              {
@@ -381,6 +405,11 @@ public:
              //抛出参数异常
          }
          return ret;
+     }
+     //insert 操作
+     bool insert(const T& value,TreeNode<T>* parent)
+     {
+        return insert(value,parent,ANY);
      }
      bool insert(const T& value,TreeNode<T>* parent,BTNodePos pos)
      {
@@ -431,7 +460,8 @@ public:
      }
      void clear()//clear operator
      {
-
+        free(root());
+        this->m_root=NULL;
      }
      int degree() const
      {

@@ -8,10 +8,11 @@
 #include "gtreenode.h"
 #include "GTree.h"
 #include "sort.h"
+#include "btreenode.h"
+#include "btree.h"
 using namespace DTLib;
 using namespace std;
 //做到胸中自有丘壑
-
 /*
 template< typename V, typename E >
 Graph<V, E>& GraphEasy()
@@ -50,71 +51,45 @@ Graph<V, E>& GraphComplex()
 */
 int main()
 {
-  //测试代码
-   GTreeNode<char> root;
-   root.parent=NULL;//Comfire
-   root.values='A';
-   GTree<char> my;
-   my.insert(&root);
-   GTreeNode<char>* temp=NULL;
-   temp=my.find(&root);
-   my.insert('B',temp);
-   my.insert('C',temp);
-   my.insert('D',temp);
-   temp=my.find('B');
-   my.insert('E',temp);
-   my.insert('F',temp);
-   temp=my.find('E');
-   my.insert('K',temp);
-   my.insert('L',temp);
-   temp=my.find('C');
-   my.insert('G',temp);
+    BTreeNode<int>* ret;
+    BTree<int> m_tree;
+    m_tree.insert(1,NULL);
+    ret=m_tree.find(1);
+    m_tree.insert(2,ret);
+    m_tree.insert(3,ret);
+    ret=m_tree.find(2);
+    m_tree.insert(4,ret);
+    m_tree.insert(5,ret);
+    ret=m_tree.find(3);
+    m_tree.insert(6,ret);
+    m_tree.insert(7,ret);
 
-   temp=my.find('D');
-   my.insert('H',temp);
-   my.insert('I',temp);
-   my.insert('J',temp);
-   temp=my.find('H');
-   my.insert('M',temp);
-   for(my.begin();!my.end();my.next())
-   {
-       cout<<my.current()<<" ";
-   }
-   cout<<endl;
-//   const char* freach="KLFGMIJ";
-//   while (*freach!='\0') {
-//       TreeNode<char>* temp1;
-//       temp1=my.find(*freach);
-//       while(temp1!=NULL)
-//       {
-//          cout<<temp1->values<<" ";
-//          temp1=temp1->parent;
-//       }
-//       cout<<endl;
-//       freach++;
-//   }
-  SharedPointer<Tree<char>> sp=my.remove('D');
-  const char* freach="MIJ";
-  while (*freach!='\0') {
-      TreeNode<char>* temp1;
-      temp1=sp->find(*freach);
-      while(temp1!=NULL)
-      {
-         cout<<temp1->values<<" ";
-         temp1=temp1->parent;
-      }
-      cout<<endl;
-      freach++;
-  }
-   cout<<endl;
-  for(my.begin();!my.end();my.next())
-  {
-      cout<<my.current()<<" ";
-  }
-  cout<<endl;
-  cout<<sp->count()<<endl;
-  cout<<sp->height()<<endl;
-  cout<<sp->degree()<<endl;
+    ret=m_tree.find(4);
+    m_tree.insert(8,ret);
+    m_tree.insert(9,ret);
+
+    ret=m_tree.find(5);
+    m_tree.insert(10,ret);
+
+    ret=m_tree.find(6);
+    m_tree.insert(11,ret);
+
+    for(m_tree.begin();!m_tree.end();m_tree.next())
+    {
+        cout<<m_tree.current()<<" ";
+    }
+    cout<<endl;
+    m_tree.clear();
+    m_tree.count();
+
+    SharedPointer<Tree<int>> sp= m_tree.remove(3);
+
+    for(sp->begin();!sp->end();sp->next())
+    {
+        cout<<sp->current()<<" ";
+    }
+    cout<<endl;
+    cout<<sp->count()<<endl;
 
     /*
     Graph<int, int>& g = GraphEasy<int, int>();

@@ -19,6 +19,12 @@ namespace DTLib
         virtual SharedPointer<Tree<T>> remove(const T& value)=0;
         virtual TreeNode<T>* root() const=0;
         virtual void clear()=0;//clear operator
+        //便利操作
+        virtual bool begin()=0;
+        virtual bool end()=0;
+        virtual bool next()=0;
+        virtual T current()=0;
+
         virtual int degree() const=0;
         virtual int height() const=0;
         virtual int count() const=0;
