@@ -6,6 +6,7 @@
 #include "Array.h"
 #include "DynamicArray.h"
 #include "circlequeue.h"
+#include "Exception.h"
 namespace DTLib {
 enum BTTravelsal
 {
@@ -196,7 +197,7 @@ protected:
        }
        return h;
     }
-    //preorder
+    //preorder--先序遍历
     void PreOrderTraversal(BTreeNode<T>* node,CircleQueue<BTreeNode<T>*>& queue)
     {
         if(node!=NULL)
@@ -206,6 +207,7 @@ protected:
             PreOrderTraversal(node->right,queue);
         }
     }
+    //中序遍历
     void InOrderTraversal(BTreeNode<T>* node,CircleQueue<BTreeNode<T>*>& queue)
     {
         if(node!=NULL)
@@ -215,6 +217,17 @@ protected:
             InOrderTraversal(node->right,queue);
         }
     }
+    //后序遍历
+    void PostOrderTraversal(BTreeNode<T>* node,CircleQueue<BTreeNode<T>*>& queue)
+    {
+        if(node!=NULL)
+        {
+            PostOrderTraversal(node->left,queue);
+            PostOrderTraversal(node->right,queue);
+            queue.add(node);
+        }
+    }
+    //层次遍历
     void LevelOrderTraversal(BTreeNode<T>* node,CircleQueue<BTreeNode<T>*>& queue)
     {
         if(node!=NULL)
@@ -241,15 +254,7 @@ protected:
 
         }
     }
-    void PostOrderTraversal(BTreeNode<T>* node,CircleQueue<BTreeNode<T>*>& queue)
-    {
-        if(node!=NULL)
-        {
-            PostOrderTraversal(node->left,queue);
-            PostOrderTraversal(node->right,queue);
-            queue.add(node);
-        }
-    }
+
     //clone操作
     BTreeNode<T>* clone(BTreeNode<T>* node) const
     {
@@ -262,18 +267,20 @@ protected:
                 n->values=node->values;
                 n->left=clone(node->left);
                 n->right=clone(node->right);
+                /*
                 if(n->left!=NULL)
                 {
-                    n->left->parent=n;
+                    //n->left->parent=n;
                 }
                 if(n->right!=NULL)
                 {
-                    n->left->parent=n;
+                    //n->right->parent=n;
                 }
+                */
             }
             else
             {
-                //throw expection
+                THROW_EXCEPTION(NoEnoughMemoryException,"No memroy to creat node");
             }
          }
          return n;
@@ -321,7 +328,7 @@ protected:
                 }
                 if(ret->right!=NULL)
                 {
-                    ret->left->parent=ret;
+                    ret->right->parent=ret;
                 }
             }
             else
@@ -519,16 +526,20 @@ public:
              //throw expection
          }
      }
-     //
+     //接口设计
+     //@param:order
      SharedPointer<Array<T>> traversal(BTTravelsal order)
      {
          DynamicArray<T>* ret=NULL;//creat a new ret object
          CircleQueue<BTreeNode<T>*> queue;//queue recerve
+         //Common descition which should be convert
          traversal(order,queue);
+         //注意必须指定数组的大小
          ret=new DynamicArray<T>(queue.length());
          //判断参数的合法性
          if(ret)
          {
+             //利用queue的先进先出
             for(int i=0;i<ret->length();i++,queue.remove())
             {
                 ret->set(i,queue.front()->values);
@@ -536,11 +547,11 @@ public:
          }
          else
          {
-             //throw expection
+             THROW_EXCEPTION(NoEnoughMemoryException,"no memory to creat ret obj");
          }
          return ret;
      }
-     SharedPointer<BTree<T>> clone()const
+     SharedPointer<Tree<T>> clone()const
      {
          //return Btree
          BTree<T>* ret=new BTree<T>();
@@ -550,7 +561,7 @@ public:
          }
          else
          {
-             //throw exception
+             THROW_EXCEPTION(NoEnoughMemoryException,"No memroy to creat Tree");
          }
         return ret;
      }
@@ -563,7 +574,7 @@ public:
         }
         else
         {
-
+            //抛出异常
         }
         return ret;
      }

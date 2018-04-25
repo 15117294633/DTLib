@@ -71,25 +71,66 @@ int main()
     ret=m_tree.find(5);
     m_tree.insert(10,ret);
 
-    ret=m_tree.find(6);
-    m_tree.insert(11,ret);
-
     for(m_tree.begin();!m_tree.end();m_tree.next())
     {
         cout<<m_tree.current()<<" ";
     }
     cout<<endl;
-    m_tree.clear();
-    m_tree.count();
 
+    BTree<int> bt2;
+    bt2.insert(0,NULL);
+    ret=bt2.find(0);
+    bt2.insert(6,ret);
+    bt2.insert(2,ret);
+    ret=bt2.find(2);
+    bt2.insert(7,ret);
+    bt2.insert(8,ret);
+    cout<<endl;
+
+    for(bt2.begin();!bt2.end();bt2.next())
+    {
+        cout<<bt2.current()<<" ";
+    }
+    cout<<endl;
+
+    /*
     SharedPointer<Tree<int>> sp= m_tree.remove(3);
 
     for(sp->begin();!sp->end();sp->next())
     {
         cout<<sp->current()<<" ";
     }
+
+    cout<<sp->height()<<endl;
+    */
+    /*
+    LevelCommand,
+    PreOrder
+    InOrder
+    PostOrder
+    */
+    /*
+    SharedPointer<Array<int>> array=m_tree.traversal(InOrder);
+    for(int i=0;i<array->length();i++)
+    {
+        cout<<(*array)[i]<<" ";
+    }
+    */
+    /*
     cout<<endl;
-    cout<<sp->count()<<endl;
+    SharedPointer<Tree<int>> cl= m_tree.clone();
+    for(cl->begin();!cl->end();cl->next())
+    {
+        cout<<cl->current()<<" ";
+    }
+    cout<<endl;
+    */
+    SharedPointer<BTree<int>> add=m_tree.add(bt2);
+    for(add->begin();!add->end();add->next())
+    {
+        cout<<add->current()<<" ";
+    }
+    cout<<endl;
 
     /*
     Graph<int, int>& g = GraphEasy<int, int>();
