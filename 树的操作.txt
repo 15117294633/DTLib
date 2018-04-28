@@ -1,0 +1,89 @@
+
+ BTree<int> bt;
+ BTreeNode<int>* n=NULL;
+
+ bt.insert(1,NULL);
+ n=bt.find(1);
+ bt.insert(2,n);
+ bt.insert(3,n);
+ n=bt.find(2);
+ bt.insert(4,n);
+ bt.insert(5,n);
+ n=bt.find(3);
+ bt.insert(6,n);
+ bt.insert(7,n);
+ n=bt.find(4);
+ bt.insert(8,n);
+ bt.insert(9,n);
+ n=bt.find(5);
+ bt.insert(10,n);
+
+ //tree2
+  BTree<int> bt2;
+  /*
+   * cout<<"bt1"<<endl;
+   for(bt.begin();!bt.end();bt.next())
+   {
+       cout<<bt.current()<<endl;
+   }
+ */
+  bt2.insert(0,NULL);
+  n=bt2.find(0);
+  bt2.insert(6,n);
+  bt2.insert(2,n);
+  n=bt2.find(2);
+  bt2.insert(7,n);
+  bt2.insert(8,n);
+  cout<<"bt2"<<endl;
+/*
+   SharedPointer<BTree<int>> sp=bt.add(bt2);
+   cout<<"bt+bt2"<<endl;
+   for(sp->begin();!sp->end();sp->next())
+   {
+       cout<<sp->current()<<endl;
+   }
+   */
+   BTreeNode<int>* hi=bt.thread(PreOrder);
+   while(hi)
+   {
+        cout<<hi->values<<" ";
+       hi=hi->left;
+   }
+//cout<<bt.count()<<endl;
+//cout<<bt.height()<<endl;
+
+
+ /*
+ cout<<"after"<<endl;
+SharedPointer<BTree<int>> sp=bt.clone();
+for(sp->begin();!sp->end();sp->next())
+{
+    cout<<sp->current()<<endl;
+}
+cout<<"compare"<<endl;
+cout<<(bt==*sp)<<endl;
+cout<<(bt!=*sp)<<endl;
+
+*/
+/*
+  SharedPointer<Array<int>> ap=bt.traversal(LevelCommand);
+
+  for(int i=0;i<(*ap).length();i++)
+  {
+      cout<<(*ap)[i]<<" ";
+  }
+*/
+/*
+ SharedPointer<Tree<int>> sp;
+ int a[5]={8,9,10,6,7};
+ for(int i=0;i<5;i++)
+ {
+    TreeNode<int>* n=bt.find(a[i]);
+    while(n)
+    {
+        std::cout<<n->values<<"->";
+        n=n->parent;
+    }
+    cout<<endl;
+ }
+*/

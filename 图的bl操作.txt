@@ -1,0 +1,89 @@
+
+#include "TreeNode.h"
+#include "Tree.h"
+#include "GTree.h"
+#include "GtreeNode.h"
+#include <iostream>
+#include "SharedPointer.h"
+#include "BTree.h"
+#include "BTreeNode.h"
+#include "StaticList.h"
+#include "LinuxList.h"
+#include "LinkStack.h"
+#include "DTString.h"
+#include "graph.h"
+#include "matrixgraph.h"
+#include "listgraph.h"
+#include "sort.h"
+#include "DynamicArray.h"
+#include "DTString.h"
+using namespace DTLib;
+using namespace std;
+
+template <typename V,typename E>
+void DFS(Graph<V,E>& graph,int v,DynamicArray<bool>& tovisited )
+{
+    if((0<=v)&&(v<graph.vCount()))
+    {
+        cout<<v<<endl;
+        tovisited[v]=true;
+        SharedPointer<Array<int>> sp=graph.Adjacent(v);
+        for(int j=0;j<sp->length();j++)
+        {
+            if(!tovisited[(*sp)[j]])
+            {
+             DFS(graph,(*sp)[j], tovisited);
+            }
+        }
+    }
+}
+
+template <typename V,typename E>
+void DFS(Graph<V,E>& graph,int v)
+{
+DynamicArray<bool> visited(graph.vCount());
+for(int i=0;i<visited.length();i++)
+{
+    visited[i]=false;
+}
+ DFS(graph,v,visited);
+}
+
+int main()
+{
+MatrixGraph<9,char,int> g;
+const char* VD="ABEDCGFHI";
+for(int i=0;i<9;i++)
+{
+    g.setVertex(i,VD[i]);
+}
+g.setEdge(0,3,0);
+g.setEdge(3,0,0);
+g.setEdge(0,4,0);
+g.setEdge(4,0,0);
+g.setEdge(0,1,0);
+g.setEdge(1,0,0);
+g.setEdge(1,2,0);
+g.setEdge(2,1,0);
+g.setEdge(1,4,0);
+g.setEdge(4,1,0);
+g.setEdge(3,6,0);
+g.setEdge(6,3,0);
+g.setEdge(4,6,0);
+g.setEdge(6,4,0);
+g.setEdge(2,5,0);
+g.setEdge(5,2,0);
+g.setEdge(6,7,0);
+g.setEdge(7,6,0);
+g.setEdge(7,8,0);
+g.setEdge(8,7,0);
+SharedPointer<Array<int>> sb=g.DFS(0);
+for(int i=0;i<sb->length();i++)
+{
+    cout<<(*sb)[i]<<" ";
+}
+cout<<endl;
+DFS(g,0);
+
+return 0;
+}

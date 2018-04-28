@@ -1,0 +1,998 @@
+#include <iostream>
+#include "Object.h"
+#include "SmartPoint.h"
+#include "List.h"
+#include "Exception.h"
+#include "SeqList.h"
+#include "StaticList.h"
+#include "DynamicList.h"
+#include "StaticArray.h"
+#include "DynamicArray.h"
+#include "LinkList.h"
+//#include "StaticLinkList.h"
+#include "SharedPointer.h"
+#include "CircleList.h"
+#include "DualLinkList.h"
+#include "StaticStack.h"
+#include "LinkStack.h"
+#include "StaticQueue.h"
+#include "Dualcirclelist.h"
+#include "LinuxList.h"
+#include "LinkQueue.h"
+#include "CircleQueue.h"
+#include "DTString.h"
+#include <cstring>
+#include <cstdlib>
+#include "Sort.h"
+#include "TreeNode.h"
+#include "Tree.h"
+using namespace std;
+using namespace DTLib;
+//查找数据
+int tests_values[16]={1,2,8,9,2,4,9,12,4,7,10,13,6,8,11,15};
+bool HasValues(int* matrix,int col,int row,int index)//数组，列，行
+{
+//行，列
+  bool  ret=false;
+  if(matrix!=NULL&&col>0&&row>0)
+  {
+  //
+   int colum=col-1;
+   int rows=0;
+   while((rows<row)&&(colum>=0))
+   {
+     if(matrix[rows*col+colum]==index)
+     {
+       ret=true;
+       break;
+     }
+     else if(matrix[rows*col+colum]>index)
+     {
+       --colum;
+     }
+     else
+     {
+       rows++;
+     }
+   }
+  }
+  return ret;
+}
+template <typename T>
+class StacktoQueue:public Queue<T>
+{
+   mutable LinkStack<T> stack_in;
+   mutable LinkStack<T> stack_out;
+public:
+   void add(const T& e)
+   {
+     stack_in.push(e);
+   }
+   void remove()
+   {
+       if(stack_out.size()==0)
+       {
+           while(stack_in.size()>0)
+           {
+               stack_out.push(stack_in.top());
+               stack_in.pop();
+           }
+       }
+       if(stack_out.size()>0)
+       {
+         stack_out.pop();
+       }
+       else
+       {
+         THROW_EXCEPTION(InvalidOperatorException,"Opeartot error");
+       }
+   }
+   T front() const
+   {
+       if(stack_out.size()==0)
+       {
+           while(stack_in.size()>0)
+           {
+               stack_out.push(stack_in.top());
+               stack_in.pop();
+           }
+       }
+       if(stack_out.size()>0)
+       {
+         return stack_out.top();
+       }
+       else
+       {
+           THROW_EXCEPTION(InvalidOperatorException,"Opeartot error");
+         //throw_expection();
+       }
+
+   }
+   void clear()
+   {
+      stack_out.clear();
+      stack_in.clear();
+   }
+   int length() const
+   {
+      return stack_out.size()+stack_in.size();
+   }
+
+};
+template <typename T>
+class QueuetoStack:public Stack<T>
+{
+protected:
+    LinkQueue<T> queue_in;
+    LinkQueue<T> queue_out;
+    LinkQueue<T>* queue_pointer_1;
+    LinkQueue<T>* queue_pointer_2;
+    void move() const
+    {
+       int n=queue_pointer_1->length()-1;
+       for(int i=0;i<n;i++)
+       {
+          queue_pointer_2->add(queue_pointer_1->front());
+          queue_pointer_1->remove();//没移动一次位置指整移动
+       }
+    }
+public:
+    //初始化
+    QueuetoStack()
+    {
+       queue_pointer_1=&queue_in;
+       queue_pointer_2=&queue_out;
+    }
+    void push(const T& e)
+    {
+        queue_pointer_1->add(e);
+    }
+    void pop()
+    {
+        if(queue_pointer_1->length()>0)
+        {
+          move();
+          queue_pointer_1->remove();
+          //交换2个指针
+          LinkQueue<T>* temp=NULL;
+          temp=queue_pointer_1;
+          queue_pointer_1=queue_pointer_2;
+          queue_pointer_2=temp;
+        }
+        else
+        {
+          THROW_EXCEPTION(InvalidOperatorException,"Opeartot error");
+        }
+
+    }
+    T top() const
+    {
+        if(queue_pointer_1->length()>0)
+        {
+            move();
+            return queue_pointer_1->front();
+        }
+        else
+        {
+             THROW_EXCEPTION(InvalidOperatorException,"Opeartot error");
+        }
+    }
+    void clear()
+    {
+        queue_pointer_1->clear();
+        queue_pointer_2->clear();
+    }
+    int size()
+    {
+        return (queue_pointer_1->length()+queue_pointer_2->length());
+    }
+
+};
+/* test class
+ *
+class Test: public Object
+{
+ public:
+    int i;
+    int j;
+};
+class child : public Test
+{
+public:
+    int k;
+};
+*/
+/*
+class Test:public Object
+{
+private:
+    int i;
+public:
+    Test(int v=0)
+    {
+        i= v;
+    }
+    bool operator ==(const Test& obj)
+    {
+        return (i==obj.i);
+    }
+};
+*/
+class Test:public Object
+{
+public:
+    Test()
+    {
+        cout<<"Test()"<<endl;
+    }
+    ~Test()
+    {
+        cout<<"~Test()"<<endl;
+    }
+    int Values;
+
+};
+//c语言方式快速创建数组
+/*
+struct Node:public Object
+{
+    list_head head;
+    int  values;
+};
+Node node;
+list_head* ls=&node.head;
+Node* p1=reinterpret_cast<Node*>(ls);
+Node* p2=list_entry(ls,Node,head);
+void Test1()
+{
+
+    String s;
+    s='D';
+
+    cout<<s.str()<<endl;
+    cout<<s.length()<<endl;
+    cout<<(s=='D')<<endl;
+    cout<<(s>"CCC")<<endl;
+
+    s+=" ncy love zyy";
+
+
+    cout<<s.str()<<endl;
+    cout<<s.length()<<endl;
+    cout<<(s=="D ncy love zyy")<<endl;
+
+}
+*/
+//链表反转打印
+void reversse_display_list_stack()
+{
+    LinkList<int> single;
+    LinkStack<int> stack;
+    for(int i=1;i<10;i++)
+    {
+        single.insert(i);
+    }
+    for(int i=0;i<single.length();i++)
+    {
+       stack.push(single.get(i));
+    }
+    while(stack.size()>0)
+    {
+        cout<<stack.top()<<endl;
+        stack.pop();
+    }
+}
+//List reversse
+struct Node
+{
+    int v;
+    struct Node* next;
+};
+//creat a new List Node
+struct Node* create_list(int len)
+{
+    //ret is a return header
+    struct Node* ret = NULL;
+    struct Node* slider = NULL;
+    //struct Node
+    for(int i=0;i<len;i++)
+    {
+      struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+      //judgemrnt
+       if( node )
+       {
+           node->v = i;
+           node->next = NULL;
+           if( slider == NULL )
+           {
+               ret = node;
+               slider = node;
+           }
+           else
+           {
+               slider->next = node;
+               slider = node;
+           }
+       }
+    }
+    return ret;
+   }
+void display_list(struct Node* list)
+{
+    while( list )
+    {
+        printf("%d -> ", list->v);
+
+        list = list->next;
+    }
+
+    printf("NULL \n");
+}
+void list_free(struct Node* list)
+{
+    while(list)
+    {
+        Node* tem=list;
+        free(tem);
+        list=list->next;
+    }
+}
+//链表反转
+struct Node* list_reverse(struct Node* list)
+{
+    if(list)
+    {
+        struct Node* guard=NULL;
+        struct Node* next=list->next;
+        while(next)
+        {
+            list->next=guard;
+            guard=list;//
+            list=next;
+            next=list->next;
+        }
+        list->next=guard;
+    }
+
+    return list;
+}
+
+/**************将员工的年龄排序*****************/
+/*
+bool sort(int ages[],int n)
+{
+  bool ret=true;
+  int step=0;
+  const int age_max=99;
+  int age_times[age_max]={0X00};
+  if(ages!=NULL&&n>0)
+  {
+  //定义最大的数据
+
+    for(int i=0;i<n;i++)
+    {
+      if(ages[i]>0)
+      {
+        ++age_times[ages[i]];
+      }
+      else
+      {
+        ret=false;
+      }
+    }
+  }
+  else
+  {
+    ret=false;
+  }
+
+  for(int i=0;i<99;i++)
+  {
+    for(int j=0;j<age_times[i];j++)
+    {
+        ages[step++]=i;
+    }
+  }
+  for(int i=0;i<10;i++)
+  {
+     cout<<ages[i]<<endl;
+  }
+  return ret;
+}
+*/
+/****************kmp算法************************************/
+//得到部分匹配表
+int* make_pmt(const char* p)
+{
+    int len=strlen(p);
+    //申请空间
+    int* ret=static_cast<int*>(malloc(sizeof(int)*len));
+    if(ret!=NULL)
+    {
+        ret[0]=0;
+        int ll=0;
+        for(int i=1;i<len;i++)
+        {
+            while(ll>0&&p[ll]!=p[i])
+            {
+               ll=ret[ll-1];
+            }
+            if(p[ll]==p[i])
+            {
+                ll++;
+            }
+            ret[i]=ll;
+        }
+    }
+    return ret;
+}
+int kmp(const char* s, const char* l)
+{
+    int ret=-1;
+    int s1=strlen(s);
+    int l1=strlen(l);
+    int* kmp=make_pmt(l);
+    if((kmp!=NULL)&&(l1>0)&&(s1>l1))
+    {
+        //理想情况下
+        for(int i=0,j=0;i<s1;i++)
+        {
+           while(j>0&&(s[i]!=l[j]))
+           {
+               j=kmp[j-1];
+           }
+           if(s[i]==l[j])
+           {
+             j++;
+             //ret=j;
+           }
+           if(j==l1)
+           {
+               ret=i+1-l1;
+               break;
+           }
+        }
+    }
+    free(kmp);
+    return ret;
+}
+// char c1='C';
+//递归练习
+//递归1
+unsigned int Sum(unsigned int n)
+{
+     if(n==1)
+     {
+       return 1;
+     }
+    else if(n>1)
+    {
+        return Sum(n-1)+n;
+    }
+}
+//递归2
+unsigned int fib(unsigned int n)
+{
+    if(n<=0)
+        return -1;
+    else if(n==1||n==2)
+        return 1;
+    else if(n>2)
+        return fib(n-1)+fib(n-2);
+}
+//递归3
+unsigned  int str_len(const char* s)
+{
+    if(*s==' ')
+    {
+        return -1;
+    }
+    if(*s!='\0')
+    {
+        return 1+strlen(s+1);
+    }
+    else if(*s=='\0')
+    {
+        return 0;//退出条件
+    }
+}
+//递归4
+Node* Reversed(Node* node)
+{
+    if((node==NULL)||(node->next==NULL))
+    {
+        return node;
+    }
+    else
+    {
+        Node* guard=node->next;
+        Node* node_1=Reversed(node->next);
+        guard->next=node;
+        node->next=NULL;//
+        return node_1;
+    }
+}
+//递归5--合并2的链表
+Node* Merge(Node* list1,Node* list2)
+{
+    if(list1==NULL)
+    {
+        return list2;
+    }
+    else if(list2==NULL)
+    {
+        return list1;
+    }
+    else if(list1->v<list2->v)
+    {
+        list1->next=Merge(list1->next,list2);
+        return list1;
+    }
+    else
+    {
+        list2->next=Merge(list1,list2->next);
+        return list2;
+    }
+}
+//递归6--汉诺塔问题
+void hanoiTower(int n,char a,char b,char c)
+{
+  if(n<=0)
+      cout<<"param Error"<<endl;
+  else if(n==1)
+      cout<<a<<"->"<<c<<endl;
+  else
+   {
+      hanoiTower(n-1,a,c,b);
+      hanoiTower(1,a,b,c);
+      hanoiTower(n-1,b,a,c);
+   }
+}
+//递归7 --全排列问题
+void permutation(char* s,char* e)
+{
+    if(*s=='\0')
+    {
+        cout<<e<<endl;
+    }
+    else
+    {
+        int len=strlen(s);
+        for(int i=0;i<len;i++)
+        {
+            if(i==0||s[0]!=s[i])
+            {
+                swap(s[0],s[i]);
+                permutation(s+1,e);
+                swap(s[i],s[0]);
+            }
+        }
+    }
+}
+int main()
+{
+    
+    char s[]="aaa";
+    permutation(s,s);
+    //hanoiTower(3,'a','b','c');
+   /*
+   Node* node=create_list(5);
+   Node* node2=create_list(3);
+   display_list(node);
+   display_list(node2);
+   display_list(Merge(node,node2));
+   list_free(node);
+   list_free(node2);
+*/
+//print Fib
+    /*
+    for(int i=0;i<10;i++)
+    {
+        cout<<fib(i)<<endl;
+    }
+    */
+  // cout<<Sum(100)<<endl;
+  //排序
+    /*
+   int array[8]={9,5,3,4,1,2,7,9};
+   Sort::Quick(array,8,false);
+   for(int i=0;i<8;i++)
+   {
+     cout<<array[i]<<endl;
+   }
+   */
+ //  cout<<*sp<<endl;
+ //lesson42
+ //   String s="ababax";
+
+ //   s.replace("baba","cdc");
+
+ //   cout<<s.str()<<endl
+ //cout<<s2.str()<<endl;
+//lesson41
+ //make pmt
+
+ int* pmt=make_pmt("abcdabd");
+ for(int i=0;i<7;i++)
+ {
+     cout<< i << ":" << pmt[i] <<endl;
+ }
+
+ //kmp子串查找算法
+ //int ret=kmp("abcdaba","");
+ //cout<<ret<<endl;
+ //   int a[10]={1,3,3,5,4,9,5,6,7,1};
+ //   cout<<sort(a,10)<<endl;
+    //Lesson40
+    //字符串类的操作
+    /*
+    String s="  abc  ";
+    if(s.trim().insert(0,"D.T.").startWith("D.T.")&&s.endOf("abc"))
+    {
+        cout<<"["<<s.str()<<"]"<<endl;
+    }
+   cout<<s.trim().str()<<endl;
+   */
+   //  cout<<HasValues(tests_values,4,4,9)<<endl;
+/*
+    struct Node* node=create_list();
+    display_list(node);
+    node=list_reverse(node);
+    display_list(node);
+*/
+   // reversse_display_list_stack();
+    /*
+   QueuetoStack<int> qs;
+   for(int i=1;i<10;i++)
+   {
+    qs.push(i);
+   }
+   while(qs.size())
+   {
+       cout<<qs.top()<<endl;
+       qs.pop();
+   }
+   */
+/*
+   StacktoQueue<int> sq;
+   for(int i=1;i<10;i++)
+   {
+     sq.add(i);
+   }
+   while(sq.length()>0)
+   {
+       cout<<sq.front()<<endl;
+       sq.remove();
+   }
+*/
+   //test1();
+    /*
+    LinkStack<int> d1;
+    for(int i=0;i<5;i++)
+    {
+        d1.push(i);
+    }
+    for(int i=0;i<5;i++)
+    {
+        cout<<d1.top()<<endl;
+        d1.pop();
+    }
+    */
+    //cout<<&node.head<<endl;
+  //  cout<<p1<<endl;
+   // cout<<p2<<endl;
+/*
+    StaticQueue<int,10> sb;
+    //CircleQueue<Test> lq;
+    for(int i=0;i<10;i++)
+    {
+        sb.add(i);
+    }
+    for(int i=0;i<10;i++)
+    {
+        cout<<sb.front()<<endl;
+        sb.remove();
+    }
+ */
+   //sb.remove();
+/*
+    LinkQueue<int> lq;
+    for(int i=0;i<10;i++)
+    {
+        lq.add(i);
+    }
+    for(int i=0;i<10;i++)
+    {
+        cout<<lq.front()<<endl;
+        lq.remove();
+    }
+*/
+    /*
+    printf("%p\n",&node);
+    printf("%p\n",p1);
+    printf("%p\n",p2);
+    */
+    /*
+    StaticQueue<int,5> my_queue;
+    for(int i=0;i<5;i++)
+    {
+        my_queue.add(i);
+    }
+    for(int i=0;i<5;i++)
+    {
+        cout<<my_queue.front()<<endl;
+        my_queue.remove();
+    }
+    */
+    /*
+    LinkStack<Test> stack;
+    cout<<stack.size()<<endl;
+   */
+    /*
+    DualCircleList<int> d1;
+
+    for(int i=0;i<5;i++)
+    {
+        d1.insert(0,i);
+        d1.insert(0,5);
+    }
+
+
+
+    cout<<"BEGIN"<<endl;
+
+    d1.move(d1.length()-1);
+    while(d1.find(5)!=-1)
+    {
+        if(d1.current()==5)
+        {
+            cout<<d1.current()<<endl;
+            d1.remove(d1.find(d1.current()));
+        }
+        else
+        {
+            d1.pre();
+        }
+    }
+    cout<<"END"<<endl;
+    for(int i=0;i<d1.length();i++)
+    {
+    cout<<d1.get(i)<<endl;
+    }
+    */
+    //Josephus(41,1,3);
+/*
+    CircleList<int> c1;
+
+    for(int i=0;i<=5;i++)
+    {
+        c1.insert(i);
+    }
+*/
+   // cout<<"is not here"<<endl;
+ //Shared Pointer
+/*
+    SharedPointer<Test> sp=new Test;
+    SharedPointer<Test> sp1=sp;
+    SharedPointer<Test> sp2=NULL;
+    sp2=sp;
+    sp->Values=100;
+    cout<<sp->Values<<endl;
+    cout<<sp1->Values<<endl;
+    cout<<sp2->Values<<endl;
+    sp1.clear();
+    cout<<(sp==sp1)<<endl;
+*/
+/*
+    LinkList<int> list;
+    for(int i=0;i<5;i++)
+    {
+        list.insert(i);
+    }
+
+    for(list.move(0);!list.end();list.next())
+    {
+        cout<<list.current()<<endl;
+    }
+*/
+/*
+    StaticLinkList<int,5> list;
+
+    for(int i=0;i<5;i++)
+    {
+        list.insert(0,i); //O(n)
+    }
+    for(list.move(0,1);!list.end();list.next())
+    {
+        cout<<list.current()<<endl;
+    }
+    list.insert(6);
+*/
+    /* TEST֮ǰ��code
+    LinkList<int> list;
+
+    for(int i=0;i<5;i++)
+    {
+        list.insert(0,i); //O(n)
+    }
+    for(list.move(0,10);!list.end();list.next())
+    {
+        cout<<list.current()<<endl;
+    }
+    /* TEST
+    for(int i=0;i<list.length();i++)
+    {
+        cout<<list.get(i)<<endl;
+    }
+    */
+    /*
+    Test t1(1);
+    Test t2(2);
+    Test t3(3);
+    LinkList<Test> list;
+    list.insert(t1);
+    list.insert(t2);
+    list.insert(t3);
+    cout<<list.find(t3)<<endl;
+    */
+   // LinkList<int> list;
+   // cout<<"D.T.Software"<<endl;
+    /*lesson20 linklsit*/
+//    LinkList<int> ls;
+//    for(int i=0;i<5;i++)
+//    {
+//        ls.insert(i);
+//    }
+//    cout<<ls.find(3)<<endl;
+    /*
+    for(int i=0;i<ls.length();i++)
+    {
+       // int value=
+       cout<< ls.get(i)<<endl;
+    }
+    */
+    /*TEST*/
+   // InvalidOperatorException* sp=new InvalidOperatorException();
+
+    //    cout<<sp<<endl;
+    //delete sp;
+    /*lesson20
+    DynamicArray<int> s1(5);
+
+    for(int i=0;i<s1.length();i++)
+    {
+        s1[i]=i*i;
+    }
+
+    for(int i=0;i<s1.length();i++)
+    {
+       cout<<s1[i]<<endl;
+    }
+
+    DynamicArray<int> s2(10);
+    s2=s1;
+    s2.resize(3);
+    for(int i=0;i<s2.length();i++)
+    {
+       cout<<s2[i]<<endl;
+    }
+   // s2[4]=100;
+    */
+    /* out of index
+    int a[6]={0x00};
+    a[7]=0x12;
+    cout<<a[7]<<endl;
+    */
+    /*lesson19
+    StaticArray<int,5> s1;
+
+    for(int i=0;i<s1.length();i++)
+    {
+        s1[i]=i*i;
+    }
+    for(int i=0;i<s1.length();i++)
+    {
+       cout<<s1[i]<<endl;
+    }
+
+    StaticArray<int,5> s2;
+
+    s2 = s1;
+    for(int i=0;i<s2.length();i++)
+    {
+       cout<<s2[i]<<endl;
+    }
+    */
+    /*lesson17
+    TEST1
+    StaticList<int,5> l;
+    for(int i=0;i<l.capacity();i++)
+    {
+       l.insert(0,i);
+    }
+    for(int i=0;i<l.length();i++)
+    {
+        cout<<l[i]<<endl;
+    }
+ */
+    /*TEST2
+    DynamicList<int> l(5);
+
+    for(int i=0;i<l.capacity();i++)
+    {
+        l.insert(i);
+    }
+    for(int i=0;i<l.length();i++)
+    {
+        cout<<l[i]<<endl;
+    }
+*/
+    /*lesson16
+    SeqList<int>* test;
+    */
+    /*lesson11
+    try
+    {
+      //  throw  Exception("Test",__FILE__,__LINE__);
+        THROW_EXCEPTION(NullPointerException,"Test");
+    }
+    catch(const ArithmeticException& e)
+    {
+        cout<<"catch(const ArithmeticException& e)"<<endl;
+        cout<<e.message()<<endl;
+        cout<<e.location()<<endl;
+    }
+    catch(const IndexOutOfBoundsException& e)
+    {
+        cout<<"catch(const IndexOutOfBoundsException& e)"<<endl;
+        cout<<e.message()<<endl;
+         cout<<e.location()<<endl;
+    }
+    catch(const NoEnoughMemoryException& e)
+    {
+        cout<<"catch(const NoEnoughMemoryException& e)"<<endl;
+        cout<<e.message()<<endl;
+         cout<<e.location()<<endl;
+    }
+    catch(const InvalidParameterException& e)
+    {
+        cout<<"catch(const InvalidParameterException& e)"<<endl;
+        cout<<e.message()<<endl;
+         cout<<e.location()<<endl;
+    }
+    catch(const NullPointerException& e)
+    {
+        cout<<"catch(const NullPointerException& e)"<<endl;
+        cout<<e.message()<<endl;
+         cout<<e.location()<<endl;
+    }
+    catch(const Exception& e)
+    {
+        cout<<"catch(const Exception& e)"<<endl;
+        cout<<e.message()<<endl;
+         cout<<e.location()<<endl;
+    }
+*/
+    /*lesson9 smart pointer
+    SmartPointer<Test> sp=new Test();
+    SmartPointer<Test> sp2=new Test();
+    sp2=sp;
+    cout<<sp.isNull()<<endl;
+
+    //cout << "Hello World!" << endl;
+    return 0;
+    */
+    /*lesson12 top father
+    Object* ob1=new Test();
+    Object* ob2=new child();
+
+    cout<<"ob1 = "<<ob1<<endl;
+    cout<<"ob2 = "<<ob2<<endl;
+    */
+    /*lesson14
+    List<int>* list=NULL;
+    */
+    return 0;
+}
+
+
