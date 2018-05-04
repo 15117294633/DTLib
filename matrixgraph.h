@@ -8,7 +8,7 @@ template <int N,typename V,typename E>
 class MatrixGraph:public Graph<V,E>
 {
 protected:
-    //模板技术开发
+    //指针数组
     V* vertexes[N];
     E* m_edges[N][N];
     int m_ecount;//record edge number

@@ -43,5 +43,6 @@ HEADERS += \
     Stack.h \
     Graph.h \
     MatrixGraph.h \
-    ListGraph.h
+    ListGraph.h \
+    find.h
 
