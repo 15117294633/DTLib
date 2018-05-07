@@ -2,6 +2,7 @@
 #define MATRIXGRAPH_H
 #include "graph.h"
 #include "DynamicArray.h"
+
 namespace DTLib
 {
 template <int N,typename V,typename E>
@@ -9,11 +10,11 @@ class MatrixGraph:public Graph<V,E>
 {
 protected:
     //指针数组
-    V* vertexes[N];
+    V* vertexes[N]; //一维指针数组
     E* m_edges[N][N];
     int m_ecount;//record edge number
 public:
-    MatrixGraph()
+    MatrixGraph():m_ecount(0)
     {
         for(int i=0;i<vCount();i++)
         {
@@ -24,10 +25,11 @@ public:
                 m_edges[i][j]=NULL;
             }
         }
-        m_ecount=0;
     }
+    //get Vertex
     V getVertex(int i)
     {
+        //ret var
         V ret;
         if(!getVertex(i,ret))
         {
@@ -37,6 +39,7 @@ public:
     }
     bool getVertex(int i,V& values)
     {
+        //first judgement
         bool ret=((0<=i)&&(i<vCount()));
         if(ret)
         {
@@ -49,7 +52,6 @@ public:
                 //抛出非法操作异常
             }
         }
-
         return ret;
     }
     bool setVertex(int i,const V& values)
@@ -57,6 +59,7 @@ public:
         bool ret=((0<=i)&&(i<vCount()));
         if(ret)
         {
+            //避免赋值操作
             V* tmp=vertexes[i];
             if(tmp==NULL)
             {
@@ -71,9 +74,94 @@ public:
             {
                 //内存申请失败异常
             }
+            /*
+            if(vertexes[i]==nullptr)
+            {
+                vertexes[i]=new V();
+            }
+            if(vertexes[i]！=nullptr)
+            {
+                vertexes[i]=value;//注意赋值操作内抛出异常带来的影响
+            }
+            */
         }
         return ret;
     }
+    E getEdge(int i,int j)
+    {
+       E ret;
+       if(!getEdge(i,j,ret))
+       {
+           //抛出异常
+       }
+       return ret;
+    }
+    //get edge
+    bool getEdge(int i,int j,E& values)
+    {
+        bool ret=((0<=i)&&(i<vCount())&&(0<=j)&&(j<vCount()));
+        if(ret)
+        {
+            if(m_edges[i][j]!=NULL)
+            {
+            values= *(m_edges[i][j]);
+            }
+            else
+            {
+                //抛出异常信息
+            }
+        }
+        return ret;
+    }
+
+    bool setEdge(int i,int j,const E& values)
+    {
+        bool ret=((0<=i)&&(i<vCount())&&(0<=j)&&(j<vCount()));
+        if(ret)
+        {
+             //判断是否存在对应的下标
+             E* temp=m_edges[i][j];
+             if(temp==NULL)
+             {
+               temp=new E();
+             }
+             if(temp!=NULL)
+             {
+                *temp=values;
+                 m_ecount++;
+                 m_edges[i][j]=temp;
+             }
+             /*
+             if(m_edges[i][j]==NULL)
+             {
+                 m_edges[i][j]=new E();
+             }
+             if(m_edges[i][j]!=NULL)
+             {
+                 *(m_edges[i][j])=values;
+                  m_ecount++;
+             }
+             */
+        }
+        return ret;
+    }
+
+    bool removeEdge(int i,int j)
+    {
+        bool ret=((0<=i)&&(i<vCount())&&(0<=j)&&(j<vCount()));
+        if(ret)
+        {
+             E* toDel=m_edges[i][j];
+             m_edges[i][j]=NULL;
+             if(toDel!=NULL)
+             {
+                 m_ecount--;
+                 delete toDel;
+             }
+        }
+        return ret;
+    }
+
     SharedPointer<Array<int>> Adjacent(int i)
     {
         DynamicArray<int>* ret=NULL;
@@ -99,63 +187,7 @@ public:
         }
         return ret;
     }
-    E getEdge(int i,int j)
-    {
-       E ret;
-       if(!getEdge(i,j,ret))
-       {
-           //抛出异常
-       }
-       return ret;
-    }
-    bool getEdge(int i,int j,E& values)
-    {
-        bool ret=((0<=i)&&(i<vCount())&&(0<=j)&&(j<vCount()));
-        if(ret)
-        {
-            if(m_edges[i][j]!=NULL)
-            {
-            values= *(m_edges[i][j]);
-            }
-            else
-            {
-                //抛出异常信息
-            }
-        }
-        return ret;
-    }
-    bool setEdge(int i,int j,const E& values)
-    {
-     bool ret=((0<=i)&&(i<vCount())&&(0<=j)&&(j<vCount()));
-     if(ret)
-     {
-         if(m_edges[i][j]==NULL)
-         {
-             m_edges[i][j]=new E();
-         }
-         if(m_edges[i][j]!=NULL)
-         {
-             *(m_edges[i][j])=values;
-              m_ecount++;
-         }
-     }
-     return ret;
-    }
-    bool removeEdge(int i,int j)
-    {
-        bool ret=((0<=i)&&(i<vCount())&&(0<=j)&&(j<vCount()));
-        if(ret)
-        {
-             E* toDel=m_edges[i][j];
-             m_edges[i][j]=NULL;
-             if(toDel!=NULL)
-             {
-                 m_ecount--;
-                 delete toDel;
-             }
-        }
-        return ret;
-    }
+
     int vCount()
     {
         return N;
@@ -164,6 +196,7 @@ public:
     {
         return m_ecount;
     }
+    //判断对应行中列元素不为NULL的组合
     int OD(int i)
     {
         int ret=0;

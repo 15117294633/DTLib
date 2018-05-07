@@ -11,6 +11,7 @@
 #include "btreenode.h"
 #include "btree.h"
 #include "find.h"
+#include "matrixgraph.h"
 using namespace DTLib;
 using namespace std;
 //做到胸中自有丘壑
@@ -52,20 +53,9 @@ Graph<V, E>& GraphComplex()
 */
 int main()
 {
-    int array[5]={0,1,2,3,4};
-    int find_index=Find::rank(array,3,5);
-    cout<<find_index<<endl;
-    /*
-    Graph<int, int>& g = GraphEasy<int, int>();
-    SharedPointer< Array<int> > p = g.Dijkstra(0, 4, 65535);
 
-    for(int i=0; i<p->length(); i++)
-    {
-        cout << (*p)[i] << " ";
-    }
 
-    cout << endl;
-*/
+
     return 0;
 }
 
