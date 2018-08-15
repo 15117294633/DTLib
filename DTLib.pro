@@ -44,5 +44,7 @@ HEADERS += \
     Graph.h \
     MatrixGraph.h \
     ListGraph.h \
-    find.h
+    find.h \
+    Observer.h \
+    subject.h
 

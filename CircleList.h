@@ -9,7 +9,7 @@ namespace  DTLib
     class  CircleList:public LinkList<T>
     {
     protected:
-    //Get node
+    //原因:语法
     typedef typename LinkList<T>::Node Node;
     Node* last() const
     {
