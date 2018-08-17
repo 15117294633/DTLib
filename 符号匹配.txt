@@ -1,0 +1,43 @@
+//·ûºÅÆ¥Åä
+bool isLeft(char l)
+{
+   return ((l=='{')||(l=='<')||(l=='('));
+}
+bool isRight(char l)
+{
+   return ((l=='}')||(l=='>')||(l==')'));
+}
+bool isEuqal(char l,char r)
+{
+    return (l=='{'&&r=='}')||(l=='<'&&r=='>')||(l=='('&&r==')');
+}
+bool isQuit(char q)
+{
+    return (q=='\'')||(q=='\"');
+}
+bool macth_sign(const char* str)
+{
+    bool ret=true;
+    LinkStack<char> stack;
+    int i=0;
+    while(ret&&str[i]!='\0')
+    {
+        if(isLeft(str[i]))
+        {
+            stack.push(str[i]);
+        }
+        if((stack.size()>0)&&isRight(str[i]))
+        {
+            if(isEuqal(stack.top(),str[i]))
+            {
+              stack.pop();
+            }
+            else
+            {
+                ret=false;
+            }
+        }
+        i++;
+    }
+    return ret&&(stack.size()==0);
+}

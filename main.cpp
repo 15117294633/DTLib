@@ -14,8 +14,12 @@
 #include "matrixgraph.h"
 #include  "SharedPointer.h"
 #include "CircleList.h"
+#include "concrete_factroy.h"
+#include "StaticStack.h"
+#include "LinkStack.h"
 using namespace DTLib;
 using namespace std;
+
 //做到胸中自有丘壑
 /*
 template< typename V, typename E >
@@ -56,34 +60,21 @@ Graph<V, E>& GraphComplex()
 class Test:public Object
 {
 public:
+    int Values;
     Test()
     {
-        cout<<"Test()"<<endl;
+    }
+    Test(int i)
+    {
+        Values=i;
     }
     ~Test()
     {
-        cout<<"~Test()"<<endl;
     }
-    int Values;
+
 };
-void jose(int num,int start,int index)
-{
-    CircleList<int> list;
-    for(int i=1;i<=num;i++)
-    {
-        list.insert(i);
-    }
-   list.move(start-1,index-1);
-   while(list.length()>0)
-   {
-       list.next();
-       cout<<list.current()<<endl;
-       list.remove(list.find(list.current()));
-   }
-}
 int main()
 {
-    jose(41,1,3);
-    return 0;
+
 }
 

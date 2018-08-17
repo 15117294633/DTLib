@@ -1,0 +1,15 @@
+void jose(int num,int start,int index)
+{
+    CircleList<int> list;
+    for(int i=1;i<=num;i++)
+    {
+        list.insert(i);
+    }
+   list.move(start-1,index-1);
+   while(list.length()>0)
+   {
+       list.next();
+       cout<<list.current()<<endl;
+       list.remove(list.find(list.current()));
+   }
+}

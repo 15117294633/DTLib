@@ -5,7 +5,8 @@ CONFIG -= qt
 SOURCES += main.cpp \
     Exception.cpp \
     Object.cpp \
-    DTString.cpp
+    DTString.cpp \
+    factroy.cpp
 
 HEADERS += \
     SmartPoint.h \
@@ -46,5 +47,9 @@ HEADERS += \
     ListGraph.h \
     find.h \
     Observer.h \
-    subject.h
+    subject.h \
+    product.h \
+    concrete_product.h \
+    concrete_factroy.h \
+    factroy.h
 
