@@ -51,5 +51,9 @@ HEADERS += \
     product.h \
     concrete_product.h \
     concrete_factroy.h \
-    factroy.h
+    factroy.h \
+    Build_product.h \
+    builder.h \
+    concrete_build.h \
+    director.h
 

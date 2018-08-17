@@ -19,7 +19,9 @@
 #include "LinkStack.h"
 using namespace DTLib;
 using namespace std;
-
+#include "concrete_build.h"
+#include "builder.h"
+#include "director.h"
 //做到胸中自有丘壑
 /*
 template< typename V, typename E >
@@ -75,6 +77,9 @@ public:
 };
 int main()
 {
-
+    IBuild* build=new ThinkPadBuilder();
+    Director::Create(build);
+    //print
+    cout<<(build->GetResult()->GetCPU()+" "+build->GetResult()->GetMainboard()+" "+build->GetResult()->GetRam()+" "+build->GetResult()->GetVideoCard()).str()<<endl;
 }
 
