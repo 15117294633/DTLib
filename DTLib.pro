@@ -55,5 +55,8 @@ HEADERS += \
     Build_product.h \
     builder.h \
     concrete_build.h \
-    director.h
+    director.h \
+    target.h \
+    adaptee.h \
+    adapter.h
 

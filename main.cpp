@@ -22,6 +22,9 @@ using namespace std;
 #include "concrete_build.h"
 #include "builder.h"
 #include "director.h"
+
+#include "target.h"
+#include "adapter.h"
 //做到胸中自有丘壑
 /*
 template< typename V, typename E >
@@ -77,9 +80,7 @@ public:
 };
 int main()
 {
-    IBuild* build=new ThinkPadBuilder();
-    Director::Create(build);
-    //print
-    cout<<(build->GetResult()->GetCPU()+" "+build->GetResult()->GetMainboard()+" "+build->GetResult()->GetRam()+" "+build->GetResult()->GetVideoCard()).str()<<endl;
+     Adapter* target=new Adapter(new Adaptee());
+     target->charge();
 }
 
