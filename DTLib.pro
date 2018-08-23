@@ -58,5 +58,7 @@ HEADERS += \
     director.h \
     target.h \
     adaptee.h \
-    adapter.h
+    adapter.h \
+    implementor.h \
+    concrete_implementor.h
 
