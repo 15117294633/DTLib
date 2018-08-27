@@ -66,5 +66,7 @@ HEADERS += \
     component.h \
     concrete_component.h \
     dectorator.h \
-    concrete_decorator.h
+    concrete_decorator.h \
+    leaf.h \
+    composite.h
 
