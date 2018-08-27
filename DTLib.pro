@@ -60,5 +60,7 @@ HEADERS += \
     adaptee.h \
     adapter.h \
     implementor.h \
-    concrete_implementor.h
+    concrete_implementor.h \
+    abstraction.h \
+    concrete_abstration.h
 

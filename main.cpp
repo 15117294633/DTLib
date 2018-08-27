@@ -17,14 +17,17 @@
 #include "concrete_factroy.h"
 #include "StaticStack.h"
 #include "LinkStack.h"
-using namespace DTLib;
-using namespace std;
+//设计模式部分
+
 #include "concrete_build.h"
 #include "builder.h"
 #include "director.h"
-
 #include "target.h"
 #include "adapter.h"
+#include "concrete_implementor.h"
+#include "concrete_abstration.h"
+using namespace DTLib;
+using namespace std;
 //做到胸中自有丘壑
 /*
 template< typename V, typename E >
@@ -80,7 +83,6 @@ public:
 };
 int main()
 {
-     Adapter* target=new Adapter(new Adaptee());
-     target->charge();
+
 }
 
