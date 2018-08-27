@@ -26,6 +26,10 @@
 #include "adapter.h"
 #include "concrete_implementor.h"
 #include "concrete_abstration.h"
+#include "component.h"
+#include "concrete_component.h"
+#include "dectorator.h"
+#include "concrete_decorator.h"
 using namespace DTLib;
 using namespace std;
 //做到胸中自有丘壑
@@ -81,6 +85,10 @@ public:
     }
 
 };
+//删除对象的宏定义
+#ifndef SAFE_DELETE
+#define SAFE_DELETE(p) { if(p){delete(p); (p)=NULL;} }
+#endif
 int main()
 {
 

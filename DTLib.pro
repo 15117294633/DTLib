@@ -62,5 +62,9 @@ HEADERS += \
     implementor.h \
     concrete_implementor.h \
     abstraction.h \
-    concrete_abstration.h
+    concrete_abstration.h \
+    component.h \
+    concrete_component.h \
+    dectorator.h \
+    concrete_decorator.h
 
