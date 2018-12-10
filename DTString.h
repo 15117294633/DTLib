@@ -10,11 +10,13 @@ namespace DTLib
         int m_length;
         void init(const char* s);
         bool Equal(const char* l,const char* r,int length) const;     
-        String& remove(int i,int len);
+
         static int* make_pmt(const char* p);//tools must be statict
         static int kmp(const char* s, const char* l);
+        String& remove(int i,int len);
     public:
         //construc
+
         String();
         String(const char* s);
         String(const String& s);

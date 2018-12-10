@@ -5,6 +5,28 @@
 using namespace std;
 namespace DTLib
 {
+/*
+  Component *pRoot = new Composite("A");
+
+  Component *pDepart1 = new Composite("B");
+  pDepart1->Add(new Leaf("C"));
+  pDepart1->Add(new Leaf("D"));
+  pRoot->Add(pDepart1);
+
+  Component *pDepart2 = new Composite("E");
+  pDepart2->Add(new Leaf("F"));
+  pDepart2->Add(new Leaf("G"));
+  pDepart2->Add(new Leaf("H"));
+  pDepart2->Add(new Leaf("I"));
+  pDepart2->Add(new Leaf("J"));
+  pRoot->Add(pDepart2);
+
+  pRoot->Add(new Leaf("K"));
+  pRoot->Add(new Leaf("L"));
+
+  pRoot->Operation(0);
+
+ */
     class Composite:public Component
     {
     private:

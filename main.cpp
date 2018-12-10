@@ -17,6 +17,7 @@
 #include "concrete_factroy.h"
 #include "StaticStack.h"
 #include "LinkStack.h"
+#include "SmartPoint.h"
 //设计模式部分
 
 #include "concrete_build.h"
@@ -32,9 +33,11 @@
 #include "concrete_decorator.h"
 #include "composite.h"
 #include "leaf.h"
+#include "proxy.h"
 using namespace DTLib;
 using namespace std;
-//做到胸中自有丘壑
+//做到胸中自有丘壑==>侯杰
+//做到知其所以然
 /*
 template< typename V, typename E >
 Graph<V, E>& GraphEasy()
@@ -91,27 +94,134 @@ public:
 #ifndef SAFE_DELETE
 #define SAFE_DELETE(p) { if(p){delete(p); (p)=NULL;} }
 #endif
+int sum(int n)
+{
+    //出口条件
+    if(n==1)
+    {
+        return 1;
+    }
+    else
+    {
+        return n+sum(n-1);
+    }
+}
+int Fibonacci(int n)
+{
+    if(n==1|n==2)
+    {
+        return 1;
+
+
+    }
+    else
+    {
+        return Fibonacci(n-1)+Fibonacci(n-2);
+    }
+}
+int strlen(char* str)
+{
+    while(*str)
+    {
+        return 1+strlen(str+1);
+    }
+}
+/*------------------------------C生成链表----------------------------------*/
+//head
+
+struct Node
+{
+  int v;
+  Node* next;
+};
+//creat a new List Node
+struct Node* create_list(int len)
+{
+    //ret is a return header
+    struct Node* ret = NULL;
+    struct Node* slider = NULL;
+    //struct Node
+    for(int i=0;i<len;i++)
+    {
+      struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+      //judgemrnt
+       if( node )
+       {
+           node->v = i;
+           node->next = NULL;
+           if( slider == NULL )
+           {
+               ret = node;
+               slider = node;
+           }
+           else
+           {
+               slider->next = node;
+               slider = node;
+           }
+       }
+    }
+    return ret;
+   }
+void display_list(struct Node* list)
+{
+    while( list )
+    {
+        printf("%d -> ", list->v);
+
+        list = list->next;
+    }
+
+    printf("NULL \n");
+}
+void list_free(struct Node* list)
+{
+    while(list)
+    {
+        Node* tem=list;
+        free(tem);
+        list=list->next;
+    }
+}
+Node*  reversal(Node* list)
+{
+    if(list==NULL||list->next==NULL)
+    {
+        return list;
+    }
+    else
+    {
+
+        Node* guard=list->next;
+        Node* ret=reversal(list->next);
+        guard->next=list;
+        list->next=NULL;
+        return ret;
+    }
+}
+/*------------------------------end---------------------------------------*/
+/*-----------------------------------------------------------------------*/
+void HanoiTower(int n,char a,char b,char c)
+{
+    if(n<=0)
+        cout<<"param Error"<<endl;
+    else if(n==1)//出口
+        cout<<a<<"->"<<c<<endl;
+    else
+     {
+        HanoiTower(n-1,a,c,b);
+        HanoiTower(1,a,b,c);
+        HanoiTower(n-1,b,a,c);
+     }
+}
+
 int main()
 {
-  Component *pRoot = new Composite("A");
-
-  Component *pDepart1 = new Composite("B");
-  pDepart1->Add(new Leaf("C"));
-  pDepart1->Add(new Leaf("D"));
-  pRoot->Add(pDepart1);
-
-  Component *pDepart2 = new Composite("E");
-  pDepart2->Add(new Leaf("F"));
-  pDepart2->Add(new Leaf("G"));
-  pDepart2->Add(new Leaf("H"));
-  pDepart2->Add(new Leaf("I"));
-  pDepart2->Add(new Leaf("J"));
-  pRoot->Add(pDepart2);
-
-  pRoot->Add(new Leaf("K"));
-  pRoot->Add(new Leaf("L"));
-
-  pRoot->Operation(0);
-
+    int array[5]={1,3,4,2,3};
+    Sort::Shell(array,5);
+    for(int i=0;i<5;i++)
+    {
+        cout<<array[i]<<endl;
+    }
 }
 

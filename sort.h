@@ -18,48 +18,6 @@ private:
         a=b;
         b=c;
     }
-//   template <typename T>
-    //merge
-//    static void Merge(T src[],T helper[],int begin,int mid,int end,bool min2max=true)
-//    {
-//        int i=begin;
-//        int j=mid+1;
-//        int k=begin;
-//        while((i<=mid)&&(j<=end))
-//        {
-//            if(min2max?src[i]<src[j]:src[i]>src[j])
-//            {
-//                helper[k++]=src[i++];
-//            }
-//            else
-//            {
-//                helper[k++]=src[j++];
-//            }
-//        }
-//        while(i<=mid)
-//        {
-//            helper[k++]=src[i++];
-//        }
-//        while(j<=end)
-//        {
-//            helper[k++]=src[j++];
-//        }
-//        for(i=begin;i<=end;i++)
-//        {
-//            src[i]=helper[i];
-//        }
-//    }
-//    template <typename T>
-//    static void Merge(T src[],T helper[],int begin,int end,bool min2max=true)
-//    {
-//        if(begin<end)
-//        {
-//            int mid=(begin+end)/2;
-//            Merge(src,helper,begin,mid,min2max);
-//            Merge(src,helper,mid+1,end,min2max);
-//            Merge(src,helper,begin,mid,end,min2max);
-//        }
-//    }
     template <typename T>
     static int Partition(T array[],int begin,int end,bool min2max)
     {
@@ -95,21 +53,21 @@ public:
     template <typename T>
     static void Select(T array[],int n,bool min2max=true)
     {
-         for(int i=0;i<n;i++)
-         {
-            int min=i;  //min
-            for(int j=i+1;j<n;j++)
-            {
-               if(min2max?(array[min]>array[j]):(array[min]<array[j]))
-               {
-                   min=j;
-               }
-            }
-            if(min!=i)
-            {
-                Swap(array[i],array[min]);
-            }
-         }
+          for(int i=0;i<n;i++)
+          {
+              int min=i;
+              for(int j=i+1;j<n;j++)
+              {
+                  if(array[min]>array[j])
+                  {
+                        min=j;
+                  }
+              }
+              if(min!=i)
+              {
+                  Swap(array[i],array[min]);
+              }
+          }
     }
     //DTLib array class sort
     template <typename T>
@@ -122,23 +80,22 @@ public:
     {
         for(int i=1;i<n;i++)
         {
-            int t=i;
+            int index=i;
             T temp=array[i];
             for(int j=i-1;j>=0;j--)
             {
-                if(array[j]>temp)
+                if(temp<array[j])
                 {
-                   array[j+1]=array[j];//find mind
-                   t=j;
+                    array[j+1]=array[j];
+                    index=j;
                 }
-            }
-            if(t!=i)
-            {
-                array[t]=temp;
+                if(index!=i)
+                {
+                    array[index]=temp;
+                }
             }
         }
     }
-
     //Like a Bubble from water
     template <typename T>
     static void Insert(Array<T>& array,bool min2max=true)
@@ -148,8 +105,8 @@ public:
     template <typename T>
     static void Bubble(T array[],int len,bool min2max=true)
     {
+        //冒泡排序
         bool exchange=true;
-
         for(int i=0;i<len&&exchange==true;i++)
         {
             exchange=false;
@@ -175,8 +132,10 @@ public:
         do
         {
             d=d/3+1;
+            //增量
             for(int i=d;i<len;i+=d)
             {
+                //SHELL 条件
                 int k=i;
                 T e=array[i];
                 for(int j=i-d;(j>=0)&&(min2max?(array[j]>e):(array[j]<e));j-=d)
@@ -198,14 +157,15 @@ public:
     {
         Shell(array.array(),array.length(),min2max);
     }
-/*练习的区域*/
+    /*练习的区域*/
     template <typename T>
     static void Merge(T array[],T temp[],int begin,int end)
     {
-
         if(begin<end)
         {
+            //mid
             int mid=(begin+end)/2;
+            //第一部分
             Merge(array,temp,begin,mid);
             Merge(array,temp,mid+1,end);
             Merge(array,temp,begin,mid,end);
@@ -249,26 +209,9 @@ public:
         {
             Merge(array,temp,0,len-1);
         }
-        delete temp;
+        delete[] temp;
     }
-
-
 /***********************************************************************************/
-    //    template <typename T>
-//    static void Merge(T array[],int len,bool min2max=true)
-//    {
-//        T* helper=new T[len];//关联
-//        if(helper!=NULL)
-//        {
-//            Merge(array,helper,0,len-1,min2max);
-//        }
-//        delete[] helper;
-//    }
-//    template <typename T>
-//    static void Merge(Array<T>& array,bool min2max=true)
-//    {
-//        Merge(array.array(),array.length(),min2max);
-//    }
     template <typename T>
     static void Quick(T array[],int len,bool min2max=true)
     {

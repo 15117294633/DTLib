@@ -68,5 +68,7 @@ HEADERS += \
     dectorator.h \
     concrete_decorator.h \
     leaf.h \
-    composite.h
+    composite.h \
+    realsubject.h \
+    proxy.h
 
