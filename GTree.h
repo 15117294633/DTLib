@@ -59,8 +59,7 @@ protected:
     //树中清除操作
     void free(GTreeNode<T>* node)
     {
-        //param的判断
-        if(node!=NULL)
+        if(node!=NULL)//递归的出口
         {
            for(node->child.move(0);!node->child.end();node->child.next())
            {
@@ -69,21 +68,21 @@ protected:
            //judgement 是否为堆space creat obj
            if(node->get_flag())
            {
+               std::cout<<"heap:"<<node->values<<endl;
                delete node;//can be delete
            }
-           /*
            else
            {
-               std::cout<<node->values;
+               std::cout<<"stack:"<<node->values<<endl;
            }
-           */
         }
     }
    //param:@node:要删除的节点
    //      @ret:返回数节点
     void remove(GTreeNode<T>* node,GTree<T>* &ret)
     {
-        //指针的引用
+        //C==>指针的指针可以取数据
+        //C++==>指针的引用
         ret=new GTree();
         if(ret!=NULL)
         {
@@ -93,8 +92,9 @@ protected:
             }
             else
             {
-                //不加&后果 --会导致调用拷贝构造，容器类组件已经禁用拷贝构造，所以不加会报错
+                //不加&后果 --会导致调用拷贝构造，容器类组件已经禁用拷贝构造，所以不加会报错???
                 LinkList<GTreeNode<T>*>& child=dynamic_cast<GTreeNode<T>*>(node->parent)->child;
+                //&目的
                 child.remove(child.find(node));
                 queue.clear();
                 node->parent=NULL;
@@ -180,11 +180,11 @@ public:
             }
             else
             {
-                    //find
+                //判断当前Node结点的parent是否存在
                 GTreeNode<T>* np=find(node->parent);//find parent
                 if(np!=NULL)
                 {
-                  //判断当前Node结点的parent是否存在
+                    //转换为GTreeNode
                     GTreeNode<T>* n=dynamic_cast<GTreeNode<T>*>(node);
                     if(np->child.find(n)<0)
                     {
@@ -228,14 +228,14 @@ public:
     SharedPointer<Tree<T>> remove(TreeNode<T>* node)
     {
         GTree<T>* ret=NULL;
-        GTreeNode<T>* node_t=find(node);
-        if(node_t==NULL)
+        GTreeNode<T>* node_d=find(node);
+        if(node_d==NULL)
         {
             //抛出异常
         }
         else
         {
-         remove(node_t,ret);
+         remove(node_d,ret);
         }
         return ret;
     }
@@ -257,26 +257,26 @@ public:
     {
      return dynamic_cast<GTreeNode<T>*>(this->m_root);
     }
-   void clear()
+    void clear()
    {
         free(root());
         queue.clear();
         this->m_root=NULL;
    }
-   int degree() const
+    int degree() const
    {
         return degree(root());
    }
-   int height() const
+    int height() const
    {
         return height(root());
    }
-   int count() const
+    int count() const
    {
         return count(root());
    }
-   //遍历操作需要做的4个函数
-   bool begin()
+    //遍历操作需要做的4个函数
+    bool begin()
    {
        bool ret=(root()!=NULL);
        if(ret)
@@ -285,11 +285,11 @@ public:
        }
        return ret;
    }
-   bool end()
+    bool end()
    {
        return (queue.length()==0);
    }
-   bool next()
+    bool next()
    {
        bool ret=(queue.length()>0);
        if(ret)
@@ -307,7 +307,7 @@ public:
        }
        return ret;
    }
-   T current()
+    T current()
    {
        //add !empty
        if(!end())

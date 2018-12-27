@@ -72,3 +72,6 @@ HEADERS += \
     realsubject.h \
     proxy.h
 
+DISTFILES += \
+    树的操作.txt
+

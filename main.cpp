@@ -217,11 +217,40 @@ void HanoiTower(int n,char a,char b,char c)
 
 int main()
 {
-    int array[5]={1,3,4,2,3};
-    Sort::Shell(array,5);
-    for(int i=0;i<5;i++)
-    {
-        cout<<array[i]<<endl;
-    }
+    GTree<int> bt;
+    GTreeNode<int>* n=NULL;
+    GTreeNode<int> node;
+
+
+
+    node.values=1;
+    bt.insert(&node);
+    n=bt.find(1);
+
+    GTreeNode<int> node1;
+    node1.parent=n;
+    node1.values=2;
+    bt.insert(&node1);
+
+    bt.insert(3,n);
+    n=bt.find(2);
+    bt.insert(4,n);
+    bt.insert(5,n);
+    n=bt.find(3);
+    bt.insert(6,n);
+    bt.insert(7,n);
+    n=bt.find(4);
+    bt.insert(8,n);
+    bt.insert(9,n);
+    n=bt.find(5);
+    bt.insert(10,n);
+ //           1
+ //        2        3
+ //     4    5   6   7
+ //   8  9 10
+ //  SharedPointer<Tree<T>> t=bt.
+    cout<<bt.count()<<endl;
+    cout<<bt.height()<<endl;
+    cout<<bt.degree()<<endl;
 }
 

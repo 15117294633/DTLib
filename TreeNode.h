@@ -11,6 +11,7 @@ namespace DTLib
       public:
         T values;
         TreeNode<T>* parent;//线性表
+        //step1
         bool m_flag;
         void* operator new(unsigned int size)
         {
