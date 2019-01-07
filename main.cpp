@@ -34,6 +34,7 @@
 #include "composite.h"
 #include "leaf.h"
 #include "proxy.h"
+#include "0-1_backpack.h"
 using namespace DTLib;
 using namespace std;
 //做到胸中自有丘壑==>侯杰
@@ -217,40 +218,53 @@ void HanoiTower(int n,char a,char b,char c)
 
 int main()
 {
-    GTree<int> bt;
-    GTreeNode<int>* n=NULL;
-    GTreeNode<int> node;
+    int wi[7]={35,30,60,50,40,10,25};
+    int pri[7]={10,40,30,50,35,40,30};
+
+    StaticArray<obj,7> test;
+    for(int i=0;i<7;i++)
+    {
+       test[i].price= pri[i];
+       test[i].weight=wi[i];
+       test[i].status=0;
+    }
+    cout<<test.length()<<endl;
+    BackPack bp(test);
+    bp.GreedyAlgo();
+//    GTree<int> bt;
+//    GTreeNode<int>* n=NULL;
+//    GTreeNode<int> node;
 
 
 
-    node.values=1;
-    bt.insert(&node);
-    n=bt.find(1);
+//    node.values=1;
+//    bt.insert(&node);
+//    n=bt.find(1);
 
-    GTreeNode<int> node1;
-    node1.parent=n;
-    node1.values=2;
-    bt.insert(&node1);
+//    GTreeNode<int> node1;
+//    node1.parent=n;
+//    node1.values=2;
+//    bt.insert(&node1);
 
-    bt.insert(3,n);
-    n=bt.find(2);
-    bt.insert(4,n);
-    bt.insert(5,n);
-    n=bt.find(3);
-    bt.insert(6,n);
-    bt.insert(7,n);
-    n=bt.find(4);
-    bt.insert(8,n);
-    bt.insert(9,n);
-    n=bt.find(5);
-    bt.insert(10,n);
- //           1
- //        2        3
- //     4    5   6   7
- //   8  9 10
- //  SharedPointer<Tree<T>> t=bt.
-    cout<<bt.count()<<endl;
-    cout<<bt.height()<<endl;
-    cout<<bt.degree()<<endl;
+//    bt.insert(3,n);
+//    n=bt.find(2);
+//    bt.insert(4,n);
+//    bt.insert(5,n);
+//    n=bt.find(3);
+//    bt.insert(6,n);
+//    bt.insert(7,n);
+//    n=bt.find(4);
+//    bt.insert(8,n);
+//    bt.insert(9,n);
+//    n=bt.find(5);
+//    bt.insert(10,n);
+// //           1
+// //        2        3
+// //     4    5   6   7
+// //   8  9 10
+// //  SharedPointer<Tree<T>> t=bt.
+//    cout<<bt.count()<<endl;
+//    cout<<bt.height()<<endl;
+//    cout<<bt.degree()<<endl;
 }
 

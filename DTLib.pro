@@ -70,7 +70,8 @@ HEADERS += \
     leaf.h \
     composite.h \
     realsubject.h \
-    proxy.h
+    proxy.h \
+    0-1_backpack.h
 
 DISTFILES += \
     树的操作.txt
